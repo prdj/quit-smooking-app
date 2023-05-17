@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    maxlength: 20,
+    match: [/^[a-zA-Z\s.]+$/, 'The name must contain only letters'],
   },
   email: {
     type: String,
