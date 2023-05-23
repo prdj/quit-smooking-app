@@ -147,13 +147,27 @@ const survey = async (req, res) => {
 
 
   
-const profile = async (req, res) => {
-  try {
-    // Verify the token from the request headers
-    const token = req.headers.authorization;
-    if (!token) {
-      console.log('No token, authorization denied');
-      return res.status(401).json({ message: 'No token, authorization denied' });
+  const profile = async (req, res) => {
+    try {
+      // Verify the token from the request headers
+      const token = req.headers.authorization;
+      if (!token) {
+        return res.status(401).json({ message: 'No token, authorization denied' });
+      }
+  
+      // Verify and decode the token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  
+      // Find the user by ID
+      const user = await User.findById(decoded._id).select('-password');
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.json({ user });
+    } catch (error) {
+      console.error('Error retrieving user profile:', error);
+      res.status(500).json({ message: 'Server error' });
     }
 
     // Verify and decode the token
@@ -161,10 +175,7 @@ const profile = async (req, res) => {
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
       console.log('Decoded token:', decoded);
-    } catch (error) {
-      console.log('Error verifying token:', error);
-      return res.status(401).json({ message: 'Invalid token' });
-    }
+   
 
     // Find the user by ID
     const user = await User.findById(decoded._id).select('-password');
@@ -172,10 +183,10 @@ const profile = async (req, res) => {
       console.log('User not found');
       return res.status(404).json({ message: 'User not found' });
     }
-
+  
     console.log('Profile retrieved successfully');
     res.json({ user });
-  } catch (error) {
+   }catch (error) {
     console.error('Error retrieving user profile:', error);
     res.status(500).json({ message: 'Server error' });
   }
