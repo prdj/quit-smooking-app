@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
@@ -9,7 +10,7 @@ import SignUp from './pages/SignUp';
 import { RegisterProvider } from './context/SignUpContext';
 import Survey from './pages/Survey';
 import withAuthProtection from './components/withAuthProtection';
-
+import { AuthContext } from './context/AuthContext';
 
 const ProtectedDashboard = withAuthProtection(Dashboard);
 const ProtectedGoals = withAuthProtection(Goals);
@@ -18,6 +19,8 @@ const ProtectedUser = withAuthProtection(User);
 const ProtectedSurvey = withAuthProtection(Survey);
 
 const App = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-grow">
@@ -38,7 +41,7 @@ const App = () => {
           <Route path="/survey" element={<ProtectedSurvey />} />
         </Routes>
       </div>
-      <Navbar />
+      {isLoggedIn && <Navbar />}
     </div>
   );
 };
