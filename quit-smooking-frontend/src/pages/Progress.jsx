@@ -60,7 +60,7 @@ const Progress = () => {
           
              const minutesPassed = Math.floor(daysPassed * 24 * 60);
              const minLost = cigarettesSmoked * 11;
-
+            
              // Calculate the number of days, hours, and minutes
             const daysLost = Math.floor(minLost / (60 * 24));
             const hoursLost = Math.floor((minLost % (60 * 24)) / 60);

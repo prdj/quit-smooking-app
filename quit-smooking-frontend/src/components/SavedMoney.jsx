@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { ProfileContext } from '../context/ProfileContext';
 
+
 function SavedMoney() {
   const [isLoading, setIsLoading] = useState(true);
   const [savedMoney, setSavedMoney] = useState(0);
@@ -15,7 +16,7 @@ function SavedMoney() {
           const currentDate = new Date();
           const timeDiff = Math.abs(currentDate.getTime() - quitDate.getTime());
           const daysPassed = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    
+          
           const cigarettesPerDay = profile.smokingHabit.cigarettesPerDay;
           const packageCost = profile.smokingHabit.packageCost;
           const cigarettesInPackage = profile.smokingHabit.cigarettesInPackage;
@@ -23,12 +24,11 @@ function SavedMoney() {
           const cigarettesSmoked = cigarettesPerDay * daysPassed;
           const savedMoney = (cigarettesSmoked / cigarettesInPackage) * packageCost;
     
-          setSavedMoney(savedMoney);
           setCurrency(profile.smokingHabit.selectedCurrency);
           localStorage.setItem('savedMoney', savedMoney); // Cache the saved money value in localStorage
           localStorage.setItem('currency', profile.smokingHabit.selectedCurrency); // Cache the currency in localStorage
           localStorage.setItem('lastUpdate', new Date().toISOString()); // Cache the timestamp of the last update
-    
+          localStorage.setItem('daysPassed', daysPassed)
           // Split the saved money among the goals
           const totalGoalsCost = profile.goals.reduce((total, goal) => total + goal.goalCost, 0);
           const goalsCount = profile.goals.length;
@@ -42,7 +42,7 @@ function SavedMoney() {
     
           // Update the state with the updated goals
           setGoals(updatedGoals);
-        }
+        } 
       } catch (error) {
         console.error("Error calculating saved money:", error);
       }
