@@ -1,14 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { ProfileContext } from '../context/ProfileContext';
 import SavedMoney from '../components/SavedMoney.jsx';
-import axios from 'axios'
+import axios from 'axios';
+
 const Goals = () => {
-  const {hasToken, profile, fetchUserProfile } = useContext(ProfileContext);
+  const { hasToken, profile, fetchUserProfile } = useContext(ProfileContext);
   const [goals, setGoals] = useState([]);
   const [description, setDescription] = useState('');
   const [goalCost, setGoalCost] = useState(0);
   const [currency, setCurrency] = useState('');
   const [showNewGoalForm, setShowNewGoalForm] = useState(false);
+  const [goalCovered, setGoalCovered] = useState(false);
+  const [savedMoney , setSavedMoney] = useState();
 
   useEffect(() => {
     fetchUserProfile();
@@ -25,7 +28,11 @@ const Goals = () => {
   };
 
   const handleGoalCostChange = (e) => {
-    setGoalCost(e.target.value);
+    const cost = e.target.value;
+    setGoalCost(cost);
+
+    // Check if the goal cost is covered by the saved money
+    setGoalCovered(cost <= savedMoney);
   };
 
   const handleCurrencyChange = (e) => {
@@ -34,17 +41,17 @@ const Goals = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const token = hasToken;
-  
+
       const newGoalData = {
         description,
         achieved: false,
         goalCost,
         currency,
       };
-  
+
       // Make an API request to save the new goal
       const response = await axios.put(
         'https://quit-smoking-app.onrender.com/api/users/goals',
@@ -55,8 +62,13 @@ const Goals = () => {
           },
         }
       );
-  
-      if (response.status === 200 && response.data && response.data.goals && response.data.goals.length > 0) {
+
+      if (
+        response.status === 200 &&
+        response.data &&
+        response.data.goals &&
+        response.data.goals.length > 0
+      ) {
         const goalsArray = response.data.goals;
         const newGoal = goalsArray[goalsArray.length - 1];
         if (newGoal) {
@@ -64,9 +76,9 @@ const Goals = () => {
           const { description, goalCost, currency } = newGoal;
           // Do something with the properties
         }
-      
+
         setGoals((prevGoals) => [...prevGoals, newGoal]);
-  
+
         // Reset the form
         setDescription('');
         setGoalCost(0);
@@ -78,11 +90,10 @@ const Goals = () => {
     }
   };
 
-  //Delete a Goal
   const handleDeleteGoal = async (goalId) => {
     try {
       const token = hasToken;
-  
+
       // Make an API request to delete the goal
       const response = await axios.delete(
         `https://quit-smoking-app.onrender.com/api/users/goals/${goalId}`,
@@ -92,7 +103,7 @@ const Goals = () => {
           },
         }
       );
-  
+
       if (response.status === 200) {
         // If the goal is successfully deleted from the database,
         // update the goals array by removing the deleted goal
@@ -104,11 +115,15 @@ const Goals = () => {
       console.error(error);
     }
   };
-  
-  
 
   const handleToggleForm = () => {
     setShowNewGoalForm(!showNewGoalForm);
+  };
+
+  const handleGotMoney = (goalCost) => {
+    // Subtract the goal cost from the saved money
+    setSavedMoney((prevSavedMoney) => prevSavedMoney - goalCost);
+    setGoalCovered(false);
   };
 
   return (
@@ -167,31 +182,38 @@ const Goals = () => {
       )}
 
       <div className="mt-4">
-      {goals && goals.length > 0 ? (
-  goals.map((goal, index) => (
-    <div
-      key={index}
-      className="bg-white rounded-lg shadow-lg p-4 mb-4 flex items-center justify-between"
-    >
-      <div>
-        <p>Description: {goal.description}</p>
-        <p>
-          Goal Cost: {goal.goalCost}
-          {goal.currency}
-        </p>
-      </div>
-      <button
-        className="text-red-500 hover:text-red-700"
-        onClick={() => handleDeleteGoal(goal._id)}
-      >
-        Delete
-      </button>
-    </div>
-  ))
-) : (
-  <p>No goals found.</p>
-)}
-
+        {goals && goals.length > 0 ? (
+          goals.map((goal, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-lg p-4 mb-4 flex items-center justify-between"
+            >
+              <div>
+                <p>Description: {goal.description}</p>
+                <p>
+                  Goal Cost: {goal.goalCost}
+                  {goal.currency}
+                </p>
+              </div>
+              {goalCovered && goal._id === goals[goals.length - 1]._id && (
+                <button
+                  className="text-green-500 hover:text-green-700"
+                  onClick={() => handleGotMoney(goal.goalCost)}
+                >
+                  You got the money
+                </button>
+              )}
+              <button
+                className="text-red-500 hover:text-red-700"
+                onClick={() => handleDeleteGoal(goal._id)}
+              >
+                Delete
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No goals found.</p>
+        )}
       </div>
     </div>
   );
