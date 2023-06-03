@@ -79,7 +79,6 @@ function Dashboard() {
             
           ) : null}
 
-        <Initials />
 
       {isLoading ? (
         <div className="form-box-dashboard">

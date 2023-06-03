@@ -296,7 +296,7 @@ const Progress = () => {
 
           <div className="progress-container-period">
             <p>
-            <p>You smoked {cigarettes} cigarettes</p>
+              <p>You smoked {cigarettes} cigarettes</p>
             </p>
             <span className="icon-progress">
                 <FontAwesomeIcon className="progress-icon-color" icon={faSmoking} name="cigarettes" />
