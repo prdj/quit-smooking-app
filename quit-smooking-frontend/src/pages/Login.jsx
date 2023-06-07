@@ -50,7 +50,7 @@ const Login = () => {
     
         fetchData();
 
-        navigate("/me/dashboard");
+      
       }
     } catch (error) {
       console.error(error);

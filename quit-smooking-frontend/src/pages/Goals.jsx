@@ -17,7 +17,6 @@ const Goals = () => {
   const [goalSaved, setGoalSaved] = useState(false);
   const [savedMoney, setSavedMoney] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  console.log("profile:", profile)
   const quitDate = new Date(profile && profile.smokingHabit && profile.smokingHabit.quitDate);
   const currentDate = new Date();
   const timeDiff = Math.abs(currentDate.getTime() - quitDate.getTime());
@@ -29,7 +28,7 @@ const Goals = () => {
   const packageCost =profile && profile.smokingHabit &&  profile.smokingHabit.packageCost;
   const cigarettesPerDay =profile && profile.smokingHabit &&  profile.smokingHabit.cigarettesPerDay;
   const priceForOneCigarret =  (packageCost / cigarettesInPackage) * cigarettesPerDay;
-   const savedMoneyy = daysPassed * priceForOneCigarret
+   const savedMoneyy = profile.savedMoney
 
 
   
@@ -82,7 +81,7 @@ const Goals = () => {
       };
 
       const response = await axios.put(
-        'https://quit-smoking-app.onrender.com/api/users/goals',
+        'http://localhost:5000/api/users/goals',
         newGoalData,
         {
           headers: {
@@ -121,7 +120,7 @@ const Goals = () => {
       const token = hasToken;
 
       const response = await axios.delete(
-        `https://quit-smoking-app.onrender.com/api/users/goals/${goalId}`,
+        `http://localhost:5000/api/users/goals/${goalId}`,
         {
           headers: {
             Authorization: token,
@@ -144,14 +143,18 @@ const Goals = () => {
     setGoalSaved(false);
   };
 
-   useEffect(() => {
-     localStorage.setItem('savedMoney', savedMoney.toString());
-   }, [savedMoney]);
+  //  useEffect(() => {
+  //    localStorage.setItem('savedMoney', savedMoney.toString());
+  //  }, [savedMoney]);
 
   const handleGoalComplete = async (goal) => {
-    const updatedSavedMoney = savedMoney - goal.goalCost;
-    setSavedMoney(updatedSavedMoney);
+    console.log("saved:",savedMoney);
 
+    const updatedSavedMoney = savedMoney - goal.goalCost;
+    console.log(goal.goalCost)
+    console.log("updated",updatedSavedMoney)
+    setSavedMoney(updatedSavedMoney);
+    console.log("saved",savedMoney);
     const updatedGoals = goals.map((g) => {
       if (g._id === goal._id) {
         return { ...g, achieved: true };
@@ -167,13 +170,15 @@ const Goals = () => {
 
   const updateSavedMoneyInDatabase = async (newSavedMoney) => {
     try {
+
+      
       const token = hasToken;
       const updatedUserData = {
         savedMoney: newSavedMoney,
       };
 
       await axios.put(
-        'https://quit-smoking-app.onrender.com/api/users/update-saved-money',
+        'http://localhost:5000/api/users/update-saved-money',
         updatedUserData,
         {
           headers: {
@@ -194,7 +199,7 @@ const Goals = () => {
       };
 
       await axios.put(
-        `https://quit-smoking-app.onrender.com/api/users/goals/achieve/${goalId}`,
+        `http://localhost:5000/api/users/goals/achieve/${goalId}`,
         updatedGoalData,
         {
           headers: {
@@ -216,14 +221,13 @@ const Goals = () => {
     }
   };
 
-  console.log(currency)
 
    return (
     <div>
     <div className="bg-gray-100 rounded-lg shadow-lg p-4 savedmoney">
     <p className="font-bold">
   <span className="text-yellow-500">Total saved:</span>
-  <span className="text-green-500"> {profile &&  profile.savedMoney &&  profile.savedMoney.toFixed(2)}{profile.smokingHabit.selectedCurrency}</span>
+  <span className="text-green-500"> {profile.savedMoney.toFixed(2)}{profile.smokingHabit.selectedCurrency}</span>
 </p></div>
       {showModal && (
         <>
