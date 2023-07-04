@@ -92,7 +92,7 @@ function Dashboard() {
       <div className="dashboard-initials">
         <Initials />
       </div>
-      {isLoading ? (
+      {!profile ? (
         <div>
           <p>Loading profile...</p>
         </div>
