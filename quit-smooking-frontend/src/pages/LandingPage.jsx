@@ -1,10 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ProfileContext } from '../context/ProfileContext';
+
 
 const LandingPage = () => {
+
 const navigate = useNavigate()
+const { isLoggedIn } = useContext(ProfileContext);
+
   const handleGetStarted = () => {
-    const isLoggedIn = true; // Replace this with your actual login check logic
+    // const isLoggedIn = true; // Replace this with your actual login check logic
     if (isLoggedIn) {
       navigate('/me/dashboard');
     } else {

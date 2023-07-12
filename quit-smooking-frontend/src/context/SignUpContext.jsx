@@ -16,16 +16,16 @@ const RegisterProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  // const login = (token) => {
-  //   setIsAuth({ token });
-  //   setLoggedIn(true);
+  const login = (token) => {
+    setIsAuth({ token });
+    setLoggedIn(true);
    
-  // };
+  };
   
-  // const logout = () => {
-  //   setIsAuth({ token: '' });
-  //   setLoggedIn(false);
-  // };
+  const logout = () => {
+    setIsAuth({ token: '' });
+    setLoggedIn(false);
+  };
 
   const handleNameChange = (event) => {
     const inputValue = event.target.value;
@@ -102,7 +102,9 @@ const RegisterProvider = ({ children }) => {
     setNameValidation,
     passwordValidation,
     setPasswordValidation,
-    isAuth
+    isAuth,
+    login,
+    logout
   };
 
   return (

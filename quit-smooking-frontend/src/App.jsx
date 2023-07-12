@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Routes, Route ,Link} from 'react-router-dom';
+import { Routes, Route ,Link, useLocation} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Goals from './pages/Goals';
@@ -25,19 +25,21 @@ const ProtectedGame = withAuthProtection(MatchTheCardsGame)
 const App = () => {
   const { isLoggedIn } = useContext(ProfileContext);
 
-  
+const location = useLocation();
+const isSurveyPage = location.pathname.includes("/survey");  
 
   return (
     
     <div className="flex flex-col h-screen ">
       <div className="flex-grow">
      
-  <Link
-    to="/me/cardgame"
-    className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-  >
-    Play a Game
-  </Link>
+          {isLoggedIn && !isSurveyPage && <Link
+        to="/me/cardgame"
+        className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Play a Game
+      </Link>}
+
        <Routes>
           <Route path='/me' element={<ProtectRoutes />}>
             <Route path="dashboard" element={<Dashboard />} />
@@ -47,6 +49,7 @@ const App = () => {
             <Route path="survey" element={<Survey />} />
             <Route path="cardgame" element={<MatchTheCardsGame />} />
           </Route>
+          
           <Route
             path="/signup"
             element={
