@@ -116,21 +116,6 @@ const Survey = () => {
         </div>
 
         <div className="mb-4">
-          <label className="survey-label" htmlFor="cigarettesPerDay">
-            Cigarettes per Day:
-          </label>
-          <input
-            type="number"
-            id="cigarettesPerDay"
-            name="cigarettesPerDay"
-            value={cigarettesPerDay}
-            placeholder="0"
-            onChange={(e) => setCigarettesPerDay(parseInt(e.target.value))}
-            className="border border-gray-400 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
-          />
-        </div>
-
-        <div className="mb-4">
           <label className="survey-label" htmlFor="quitDate">
             Quit Date:
           </label>
@@ -141,6 +126,21 @@ const Survey = () => {
             value={quitDate}
             onChange={(e) => setQuitDate(e.target.value)}
             max={new Date(Date.now() - 86400000).toISOString().split('T')[0]}
+            className="border border-gray-400 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="survey-label" htmlFor="cigarettesPerDay">
+            Cigarettes per Day:
+          </label>
+          <input
+            type="number"
+            id="cigarettesPerDay"
+            name="cigarettesPerDay"
+            value={cigarettesPerDay}
+            placeholder="0"
+            onChange={(e) => setCigarettesPerDay(parseInt(e.target.value))}
             className="border border-gray-400 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
           />
         </div>

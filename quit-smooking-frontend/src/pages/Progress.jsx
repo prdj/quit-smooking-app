@@ -91,7 +91,7 @@ const Progress = () => {
           const monthsLost = Math.floor((daysLost % 365) / 30);
           const remainingDaysLost = (daysLost % 365) % 30;
 
-          // percentage for 3 
+          // percentage for 3 weeks
            const timeDiffCurrent = Math.abs(currentDate.getTime() - quitDate.getTime());
            const daysPassedCurrent = Math.ceil(timeDiffCurrent / (1000 * 3600 * 24));
           const numeratorDays = daysPassed;

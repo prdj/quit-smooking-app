@@ -44,10 +44,12 @@ const SignUp = () => {
   //   }
   // }, [hasToken, navigate]);
 
-  if (isLoggedIn)
-  return (
-    <Navigate to={initPath.includes("signup") ? "/me/survey" : initPath} />
-  );
+  if (isLoggedIn) {
+    return <Navigate to={initPath.includes("signup") ? "/me/survey" : initPath} />;
+  }
+
+  const isFormValid = name !== "" && email !== "" && password !== "";
+
   return (
     <>
       <div className="signup-background">
@@ -70,7 +72,7 @@ const SignUp = () => {
 
                 />
               </label>
-              {nameValidation && <p style={{ color: 'red', fontSize: '12px', marginTop: '-15px' }}>{nameValidation}</p>}
+              {nameValidation && <p style={{ color: 'grey', fontSize: '10px', marginTop: '-2em' }}>{nameValidation}</p>}
             </div>
 
             <div className="signup-input-box">
@@ -110,13 +112,13 @@ const SignUp = () => {
                 />
               </label>
               {passwordValidation && (
-                <p style={{ color: 'red', fontSize: '12px', marginTop: '-20px', marginBottom: '0' }}>
+                <p style={{ color: 'grey', fontSize: '10px', marginTop: '-2em', marginBottom: '0px' }}>
                   {passwordValidation}
                 </p>)}
             </div>
 
             <div className="signup-btn">
-              <button type="submit"> Register</button>
+              <button type="submit" disabled={!isFormValid}> Register</button>
             </div>
 
             <div className="signup-to-login">
