@@ -47,6 +47,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+
 <p float="left">
  <img src="quit-smooking-frontend/src/images/Screenshot 2023-09-14 132339.png" alt="Logo" width="200" height="400">
 <img src="quit-smooking-frontend/src/images/Screenshot 2023-09-14 132435.png" alt="Logo" width="200" height="400">
