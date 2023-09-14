@@ -8,7 +8,8 @@
 <h3 align="center">Quit_Smoking_App</h3>
 
   <p align="center">
-    project_description
+    This is an app dedicated to help people who want to qui smoking.
+    You will find features that keep track on your progress based on your smoking history and assist you on your journey.
     <br />
     <a href="https://github.com/prdj/quit-smooking-app"><strong>Explore the docs »</strong></a>
     <br />
