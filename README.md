@@ -81,13 +81,6 @@ This is a mono repository project, including the directories and their purposes.
 ## Getting Started
 
 
-
-
-
-### Prerequisites
-
-
-
 ### Installation
 
 1. Clone the repo 
@@ -110,6 +103,22 @@ This is a mono repository project, including the directories and their purposes.
    cd quit-smooking-frontend
 
       npm install
+   ```
+ ### Running the Application   
+
+Frontend
+
+ ```sh
+   cd backend
+   
+   npm run dev
+   ```
+   Backend
+   
+  ```sh
+   cd quit-smooking-frontend
+
+      npm run dev
    ```
 
 
@@ -134,7 +143,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/prdj/quit-smooking-app](https://github.com/prdj/quit-smooking-app)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
