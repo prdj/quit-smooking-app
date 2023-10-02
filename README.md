@@ -61,21 +61,15 @@
 
 
 
-### Built With
+### Project Structure
+
+This is a mono repository project, including the directories and their purposes. For example:
 
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/prdj/quit-smooking-app/tree/main
-   ```
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
-3. Run front and backen
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+`/backend: Houses the backend server and API.`
+
+
+`/quit-smooking-frontend: Contains the React frontend application.`
 
 
 
@@ -88,12 +82,35 @@
 
 
 
+
+
 ### Prerequisites
 
 
 
 ### Installation
 
+1. Clone the repo 
+   ```sh
+   git clone https://github.com/prdj/quit-smooking-app/tree/main
+   ```
+2. Change into the project directory
+   ```sh
+   cd wbs-final-project
+   ```
+3. Install NPM packages in both repositories
+4. 
+   ```sh
+   cd backend
+   
+   npm install
+   ```
+   
+      ```sh
+   cd quit-smooking-frontend
+
+      npm install
+   ```
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
