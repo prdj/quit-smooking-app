@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     maxlength: 20,
-    match: [/^[a-zA-Z\s.]+$/, 'The name must contain only letters'],
+    match: [/^[a-zA-Z\s.]+$/, "The name must contain only letters"],
   },
   email: {
     type: String,
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     match: [
       // Updated regular expression for email validation
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/,
-      'Please enter a valid email',
+      "Please enter a valid email",
     ],
   },
   password: {
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     cigarettesPerDay: {
       type: Number,
       default: 0,
-      match: [/^[0-9]+$/, 'Please enter only numbers'],
+      match: [/^[0-9]+$/, "Please enter only numbers"],
     },
     quitDate: {
       type: Date,
@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     cigarettesInPackage: {
       type: Number,
       default: 0,
-      match: [/^[0-9]+$/, 'Please enter only numbers'],
+      match: [/^[0-9]+$/, "Please enter only numbers"],
     },
     startSmokingDate: {
       type: Date,
@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema({
         type: String,
       },
       goalCost: {
-        type:Number,
+        type: Number,
         required: true,
       },
       currency: {
@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema({
         // Updated regular expression for date validation
         match: [
           /^\d{4}-\d{2}-\d{2}$/,
-          'Please enter a valid date in the format YYYY-MM-DD',
+          "Please enter a valid date in the format YYYY-MM-DD",
         ],
       },
 
@@ -85,10 +85,10 @@ const userSchema = new mongoose.Schema({
   },
 
   savedMoney: {
-    type:Number,
-  }
+    type: Number,
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
