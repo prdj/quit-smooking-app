@@ -1,20 +1,26 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link, Navigate } from "react-router-dom";
-import { ProfileContext } from "../context/ProfileContext";
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserProfileAsync } from "../redux/profileSlice";
 import "../styles/Login.css";
 import axios from "axios";
-
 
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
+
 const Login = () => {
 
-  const { fetchUserProfile, setIsLoading, isLoggedIn, setLoggedIn, initPath } = useContext(ProfileContext);
+  const dispatch = useDispatch();
+  const profile = useSelector((state)=> state.profile);
+  const isLoggedIn = profile.isLoggedIn
+  
+
+  /* const { fetchUserProfile, setIsLoading, isLoggedIn, setLoggedIn, initPath } =
+    useContext(ProfileContext); */
 
   const navigate = useNavigate();
-
 
   const [formData, setFormData] = useState({
     email: "",
@@ -29,12 +35,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
       const response = await axios.post(
         "https://quit-smoking-app.onrender.com/api/users/login",
         formData
       );
-      
+
       if (response.status === 200) {
         const token = response.data.token;
         // Store the token in local storage
@@ -42,44 +47,42 @@ const Login = () => {
         setLoggedIn(true);
       }
 
-
       if (isLoggedIn) {
-
         // Let's see
         const fetchData = async () => {
           try {
             await fetchUserProfile();
 
             setLoggedIn(true);
-            console.log(isLoggedIn)
+            console.log(isLoggedIn);
           } catch (error) {
             console.error("Error fetching user profile:", error);
           } finally {
             setIsLoading(false);
           }
         };
-        
+
         await fetchData();
 
-        navigate("/me/dashboard")
-
-   
-     }
-      
+        navigate("/me/dashboard");
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+		dispatch(getUserProfileAsync());
+	}, [dispatch]);
+
 
   if (isLoggedIn)
+
     return (
       <Navigate to={initPath.includes("login") ? "/me/dashboard" : initPath} />
     );
   return (
-    
     <>
-    
       <div className="background-login">
         <div className="wrapper-dashboard">
           <form onSubmit={handleSubmit}>

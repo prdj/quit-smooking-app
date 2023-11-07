@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Popup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,9 +9,6 @@ const Popup = () => {
 
   return (
     <>
-    
-    
-
       {isOpen && (
         <div
           id="popup-modal"

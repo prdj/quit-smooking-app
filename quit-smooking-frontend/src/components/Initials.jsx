@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { ProfileContext } from '../context/ProfileContext';
-import '../styles/Dashboard.css';
+import React, { useContext } from "react";
+import { ProfileContext } from "../context/ProfileContext";
+import "../styles/Dashboard.css";
 
 function Initials() {
   const { profile } = useContext(ProfileContext);
@@ -9,11 +9,11 @@ function Initials() {
   function getInitials() {
     if (profile && profile.name) {
       const fullName = profile.name;
-      const names = fullName.split(' ');
-      const initials = names.map(name => name.charAt(0).toUpperCase());
-      return initials.join('');
+      const names = fullName.split(" ");
+      const initials = names.map((name) => name.charAt(0).toUpperCase());
+      return initials.join("");
     }
-    return '';
+    return "";
   }
 
   return (

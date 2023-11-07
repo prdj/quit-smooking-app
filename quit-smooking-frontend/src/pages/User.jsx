@@ -3,9 +3,8 @@ import { ProfileContext } from "../context/ProfileContext";
 import LogoutBtn from "../components/LogoutBtn";
 import ShareButtons from "../components/ShareButtons";
 import "../styles/User.css";
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate } from "react-router-dom";
 import Survey from "./Survey";
-
 
 function Profile() {
   const { profile, fetchUserProfile } = useContext(ProfileContext);
@@ -26,7 +25,6 @@ function Profile() {
     setOpenPrivacyPolicy(!openPrivacyPolicy);
   };
 
-
   function capitalizeFirstLetter(string) {
     const words = string.split(" ");
     const capitalizedWords = words.map((word) => {
@@ -34,8 +32,6 @@ function Profile() {
     });
     return capitalizedWords.join(" ");
   }
-  
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +65,6 @@ function Profile() {
         )}
 
         <div className="user-container">
-      
           <div className="user-extra-box">
             <button onClick={toggleDropdown}>TELL A FRIEND</button>
             {isOpen && (
@@ -207,8 +202,10 @@ function Profile() {
             )}
           </div>
 
-          <div className='user-extra-box'>
-            <Link to="/me/survey"><strong>EDIT SURVEY</strong></Link>
+          <div className="user-extra-box">
+            <Link to="/me/survey">
+              <strong>EDIT SURVEY</strong>
+            </Link>
           </div>
 
           <div className="user-extra-box">

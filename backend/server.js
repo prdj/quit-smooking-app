@@ -8,7 +8,6 @@ const cookieParserMiddleware = require("./middlewares/cookieParserMiddleware");
 
 // Start the server
 const port = process.env.PORT || 5000;
-// const port = 8080;
 
 // Create Express app
 const app = express();

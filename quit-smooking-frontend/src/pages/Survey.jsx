@@ -1,18 +1,18 @@
-import { useState, useContext, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ProfileContext } from '../context/ProfileContext';
-import axios from 'axios';
-import '../styles/Survey.css';
-import { RegisterContext } from '../context/SignUpContext';
+import { useState, useContext, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { ProfileContext } from "../context/ProfileContext";
+import axios from "axios";
+import "../styles/Survey.css";
+import { RegisterContext } from "../context/SignUpContext";
 
 const Survey = () => {
   const navigate = useNavigate();
   const [cigarettesPerDay, setCigarettesPerDay] = useState(0);
-  const [packageCost, setPackageCost] = useState('');
-  const [cigarettesInPackage, setCigarettesInPackage] = useState('');
-  const [quitDate, setQuitDate] = useState('');
-  const [startSmokingDate, setStartSmokingDate] = useState('');
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
+  const [packageCost, setPackageCost] = useState("");
+  const [cigarettesInPackage, setCigarettesInPackage] = useState("");
+  const [quitDate, setQuitDate] = useState("");
+  const [startSmokingDate, setStartSmokingDate] = useState("");
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const { isAuth } = useContext(RegisterContext);
   const { isLoggedIn } = useContext(ProfileContext);
   const [daysPassed, setDaysPassed] = useState(0);
@@ -23,25 +23,26 @@ const Survey = () => {
       const startDate = new Date(startSmokingDate);
       const endDate = new Date(quitDate);
       const currentDate = new Date();
-      
+
       const timeDiff = Math.abs(endDate.getTime() - currentDate.getTime());
       const days = Math.ceil(timeDiff / (24 * 60 * 60 * 1000));
       setDaysPassed(days);
 
-      const priceForOneCigarette = (parseFloat(packageCost) / cigarettesInPackage) * cigarettesPerDay;
+      const priceForOneCigarette =
+        (parseFloat(packageCost) / cigarettesInPackage) * cigarettesPerDay;
       const savedMoney = daysPassed * priceForOneCigarette;
-      console.log("daysPassed:", daysPassed)
-      console.log("priceForOneCigarette:", priceForOneCigarette)
-      console.log("savedMoney:",savedMoney)
-      console.log('quitDate:', quitDate)
-      const token = localStorage.getItem('token');
+      console.log("daysPassed:", daysPassed);
+      console.log("priceForOneCigarette:", priceForOneCigarette);
+      console.log("savedMoney:", savedMoney);
+      console.log("quitDate:", quitDate);
+      const token = localStorage.getItem("token");
 
       const updatedUserData = {
         savedMoney,
       };
 
       await axios.put(
-        'https://quit-smoking-app.onrender.com/api/users/update-saved-money',
+        "https://quit-smoking-app.onrender.com/api/users/update-saved-money",
         // 'https://localhost:5000/api/users/update-saved-money',
         updatedUserData,
         {
@@ -53,16 +54,24 @@ const Survey = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [startSmokingDate, quitDate, packageCost, cigarettesInPackage, cigarettesPerDay, daysPassed, isAuth.token]);
+  }, [
+    startSmokingDate,
+    quitDate,
+    packageCost,
+    cigarettesInPackage,
+    cigarettesPerDay,
+    daysPassed,
+    isAuth.token,
+  ]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
       const { status } = await axios.put(
-        'https://quit-smoking-app.onrender.com/api/users/survey',
+        "https://quit-smoking-app.onrender.com/api/users/survey",
 
         {
           startSmokingDate,
@@ -80,7 +89,7 @@ const Survey = () => {
       );
 
       updateSavedMoneyInDatabase();
-      if (isLoggedIn) navigate('/me/dashboard');
+      if (isLoggedIn) navigate("/me/dashboard");
     } catch (error) {
       console.error(error);
     }
@@ -88,7 +97,14 @@ const Survey = () => {
 
   useEffect(() => {
     updateSavedMoneyInDatabase();
-  }, [packageCost, cigarettesInPackage, cigarettesPerDay, quitDate, startSmokingDate, updateSavedMoneyInDatabase]);
+  }, [
+    packageCost,
+    cigarettesInPackage,
+    cigarettesPerDay,
+    quitDate,
+    startSmokingDate,
+    updateSavedMoneyInDatabase,
+  ]);
 
   if (!isLoggedIn) {
     return (
@@ -125,7 +141,7 @@ const Survey = () => {
             name="quitDate"
             value={quitDate}
             onChange={(e) => setQuitDate(e.target.value)}
-            max={new Date(Date.now() - 86400000).toISOString().split('T')[0]}
+            max={new Date(Date.now() - 86400000).toISOString().split("T")[0]}
             className="border border-gray-400 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
           />
         </div>

@@ -26,12 +26,6 @@ const register = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ _id: user._id }, jwtSecret);
-    // res.cookie('token', token, {
-    //   httpOnly: true,
-    //   maxAge: 1000 * 60 * 60,
-    //   sameSite: 'lax',
-    //   secure: false,
-    // });
 
     res.json({ token });
   } catch (error) {
@@ -65,17 +59,8 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ _id: checkUser._id }, jwtSecret);
 
-    // res.cookie('token', token, {
-    //   httpOnly: true,
-    //   maxAge: 1000 * 60 * 60,
-    //   sameSite: 'lax',
-    //   secure: false,
-    // });
-
     res.json({ token });
     console.log("login fired");
-
-    // Send the token in the response
     // res.json({ token });
   } catch (error) {
     console.error("Error during login:", error);

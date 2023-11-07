@@ -3,7 +3,6 @@ import ProgressCircle from "../components/ProgressCircle";
 import { ProfileContext } from "../context/ProfileContext";
 import "../styles/Progress.css";
 
-
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,9 +26,7 @@ const Progress = () => {
   const [yearPercentage, setYearPercentage] = useState(0);
   const { profile, fetchUserProfile } = useContext(ProfileContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [daysSmokeFree, setDaysSmokeFree] = useState(0)
-  
-
+  const [daysSmokeFree, setDaysSmokeFree] = useState(0);
 
   useEffect(() => {
     const accumulatedTime = () => {
@@ -47,16 +44,16 @@ const Progress = () => {
           // finding how many days have passed...
           const timeDiff = Math.abs(startDate.getTime() - quitDate.getTime());
           const daysPassed = Math.ceil(timeDiff / (1000 * 3600 * 24));
-          console.log("days",daysPassed)
+          console.log("days", daysPassed);
           // finding how many cigarettes were smoked
-          console.log("asdasf", profile.smokingHabit.cigarettesPerDay)
+          console.log("asdasf", profile.smokingHabit.cigarettesPerDay);
           const cigarettesSmoked =
             profile.smokingHabit.cigarettesPerDay * daysPassed;
 
           // finding how much money was spent
           const cigaretesInPackage = profile.smokingHabit.cigarettesInPackage;
           const packageCost = profile.smokingHabit.packageCost;
-            
+
           const totalMoneySpent =
             (cigarettesSmoked / cigaretesInPackage) * packageCost;
 
@@ -92,14 +89,18 @@ const Progress = () => {
           const remainingDaysLost = (daysLost % 365) % 30;
 
           // percentage for 3 weeks
-           const timeDiffCurrent = Math.abs(currentDate.getTime() - quitDate.getTime());
-           const daysPassedCurrent = Math.ceil(timeDiffCurrent / (1000 * 3600 * 24));
+          const timeDiffCurrent = Math.abs(
+            currentDate.getTime() - quitDate.getTime()
+          );
+          const daysPassedCurrent = Math.ceil(
+            timeDiffCurrent / (1000 * 3600 * 24)
+          );
           const numeratorDays = daysPassed;
-          console.log(daysPassed)
+          console.log(daysPassed);
           const denominator = 90;
           let percentage = (numeratorDays / denominator) * 100;
           percentage = Math.min(percentage, 100);
-          console.log(numeratorDays)
+          console.log(numeratorDays);
 
           // percentage for one month
           const denominatorMonth = 30;
@@ -109,7 +110,7 @@ const Progress = () => {
           // percentage for one year
           const denominatorYear = 365;
           let percentageYear = (numeratorDays / denominatorYear) * 100;
-          percentageYear = Math.min(percentageYear, 100); 
+          percentageYear = Math.min(percentageYear, 100);
 
           // currency
           const profileCurrency = profile.smokingHabit.selectedCurrency;
@@ -123,10 +124,10 @@ const Progress = () => {
           setMonths(monthsLost);
           setDays(remainingDaysLost);
           setCigarettes(cigarettesSmoked);
-          console.log("cigarettes", cigarettes)
+          console.log("cigarettes", cigarettes);
           setMoneySpent(totalMoneySpent);
           setCurrency(profileCurrency);
-          setDaysSmokeFree(daysPassed)
+          setDaysSmokeFree(daysPassed);
 
           localStorage.setItem("monthPercentage", percentageMonth);
           localStorage.setItem("threeWeeksPercentage", percentage);
@@ -134,7 +135,6 @@ const Progress = () => {
         }
       } catch (error) {
         console.error("Error cauculating the progress:", error);
-
       }
     };
 
@@ -170,9 +170,9 @@ const Progress = () => {
                   capacity increases, making it easier to breathe and engage in
                   physical activities.
                 </p>
-                 <div className="m-14">
-                    <ProgressCircle progress={threeWeeksPercentage.toFixed()}/>
-                  </div>
+                <div className="m-14">
+                  <ProgressCircle progress={threeWeeksPercentage.toFixed()} />
+                </div>
               </div>
             </div>
           </div>
@@ -187,11 +187,11 @@ const Progress = () => {
                   Quitting smoking lowers your susceptibility to respiratory
                   infections. Your respiratory system becomes healthier and
                   better equipped to fight off infections.
-                </p>  
-              </div> 
+                </p>
+              </div>
               <div className="m-6">
-                    <ProgressCircle progress={monthPercentage.toFixed()}/>
-              </div>            
+                <ProgressCircle progress={monthPercentage.toFixed()} />
+              </div>
             </div>
           </div>
 
@@ -208,51 +208,72 @@ const Progress = () => {
                 </p>
               </div>
               <div className="m-14">
-                    <ProgressCircle progress={yearPercentage.toFixed()}/>
+                <ProgressCircle progress={yearPercentage.toFixed()} />
               </div>
             </div>
           </div>
 
           {/* Bottom container */}
-        <div className="progress-period>">
-          <div className="progress-container-period">
-            <div className="progress-extra-box">
-            <h3><strong>During your period of smoking:</strong></h3>
+          <div className="progress-period>">
+            <div className="progress-container-period">
+              <div className="progress-extra-box">
+                <h3>
+                  <strong>During your period of smoking:</strong>
+                </h3>
+              </div>
             </div>
-          </div>
 
             <div className="progress-container-period">
-              
-              <p>You lost {years > 0 ? `${years} years` : null} {months > 0 ? `${months} months and` : null}  {days} days off your life expectancy</p>
+              <p>
+                You lost {years > 0 ? `${years} years` : null}{" "}
+                {months > 0 ? `${months} months and` : null} {days} days off
+                your life expectancy
+              </p>
 
               <span className="icon-progress">
-                <FontAwesomeIcon className="progress-icon-color" icon={faHourglass} name="password" />
+                <FontAwesomeIcon
+                  className="progress-icon-color"
+                  icon={faHourglass}
+                  name="password"
+                />
               </span>
             </div>
 
-
-          <div className="progress-container-period">
-
-           
+            <div className="progress-container-period">
               <p>You smoked {cigarettes.toLocaleString()} cigarettes</p>
-            
 
-            <span className="icon-progress">
-                <FontAwesomeIcon className="progress-icon-color" icon={faSmoking} name="cigarettes" />
-            </span>
-          </div>
-
-          <div className="progress-container-period">
-                <p>You spent {moneySpent.toLocaleString()} {currency}</p>
-
-            <span className="icon-progress">
-                <FontAwesomeIcon className="progress-icon-color" icon={faCoins} name="money" />
+              <span className="icon-progress">
+                <FontAwesomeIcon
+                  className="progress-icon-color"
+                  icon={faSmoking}
+                  name="cigarettes"
+                />
               </span>
+            </div>
+
+            <div className="progress-container-period">
+              <p>
+                You spent {moneySpent.toLocaleString()} {currency}
+              </p>
+
+              <span className="icon-progress">
+                <FontAwesomeIcon
+                  className="progress-icon-color"
+                  icon={faCoins}
+                  name="money"
+                />
+              </span>
+            </div>
           </div>
-        </div>
 
           {/* Unlocked achievements */}
-          <div className={ daysSmokeFree >= 1 ? "progress-container" : "progress-container-uncompleted"}>
+          <div
+            className={
+              daysSmokeFree >= 1
+                ? "progress-container"
+                : "progress-container-uncompleted"
+            }
+          >
             <p>1 day smoke free!</p>
             <span className="icon-progress">
               {daysSmokeFree >= 1 ? (
@@ -263,7 +284,13 @@ const Progress = () => {
             </span>
           </div>
 
-          <div className={ daysSmokeFree >= 10 ? "progress-container" : "progress-container-uncompleted"}>
+          <div
+            className={
+              daysSmokeFree >= 10
+                ? "progress-container"
+                : "progress-container-uncompleted"
+            }
+          >
             <p>10 days' smoke free!</p>
             <span className="icon-progress">
               {daysSmokeFree >= 10 ? (
@@ -274,7 +301,13 @@ const Progress = () => {
             </span>
           </div>
 
-          <div className={ daysSmokeFree >= 30 ? "progress-container" : "progress-container-uncompleted"}>
+          <div
+            className={
+              daysSmokeFree >= 30
+                ? "progress-container"
+                : "progress-container-uncompleted"
+            }
+          >
             <p>1 month smoke free!</p>
             <span className="icon-progress">
               {daysSmokeFree >= 30 ? (
@@ -286,7 +319,13 @@ const Progress = () => {
           </div>
 
           {/* Locked achievements */}
-          <div className={ daysSmokeFree >= 90 ? "progress-container" : "progress-container-uncompleted"}>
+          <div
+            className={
+              daysSmokeFree >= 90
+                ? "progress-container"
+                : "progress-container-uncompleted"
+            }
+          >
             <p>3 months smoke free!</p>
             <span className="icon-progress">
               {daysSmokeFree >= 90 ? (
@@ -297,7 +336,13 @@ const Progress = () => {
             </span>
           </div>
 
-          <div className={ daysSmokeFree >= 182 ? "progress-container" : "progress-container-uncompleted"}>
+          <div
+            className={
+              daysSmokeFree >= 182
+                ? "progress-container"
+                : "progress-container-uncompleted"
+            }
+          >
             <p>6 months smoke free!</p>
             <span className="icon-progress">
               {daysSmokeFree >= 180 ? (
@@ -308,7 +353,13 @@ const Progress = () => {
             </span>
           </div>
 
-          <div className={ daysSmokeFree >= 365 ? "progress-container" : "progress-container-uncompleted"}>
+          <div
+            className={
+              daysSmokeFree >= 365
+                ? "progress-container"
+                : "progress-container-uncompleted"
+            }
+          >
             <p>1 year smoke free!</p>
             <span className="icon-progress">
               {daysSmokeFree >= 365 ? (

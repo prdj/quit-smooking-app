@@ -1,5 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ProfileContext } from "../context/ProfileContext";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserProfileAsync } from'../redux/profileSlice';
+
 import "../styles/Dashboard.css";
 import Initials from "../components/Initials";
 import unlocking from "../images/unlocking.png";
@@ -7,13 +9,16 @@ import journey from "../images/journey.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 
-function Dashboard() {
-  const [buttonPopup, setButtonPopup] = useState(false);
-  const { profile, fetchUserProfile, isLoggedIn, setLoggedIn, isLoading, setIsLoading } = useContext(ProfileContext);
-  const currency = localStorage.getItem('currency')
+
+
+const Dashboard = () => {
+
+ const dispatch = useDispatch();
+ const profile = useSelector((state) => state.profile);
+ 
   const [openReadMe1, setOpenReadMe1] = useState(false);
   const [openReadMe2, setOpenReadMe2] = useState(false);
-  const [daysPassed, setDaysPassed] = useState(0);
+  const [daysPassed] = useState(0);
 
   function capitalizeFirstLetter(string) {
     const words = string.split(" ");
@@ -22,11 +27,11 @@ function Dashboard() {
     });
     return capitalizedWords.join(" ");
   }
-  
+
   function getGreeting() {
     const currentHour = new Date().getHours();
     let greeting = "";
-  
+
     if (currentHour >= 5 && currentHour < 12) {
       greeting = "Good morning";
     } else if (currentHour >= 12 && currentHour < 18) {
@@ -34,33 +39,24 @@ function Dashboard() {
     } else {
       greeting = "Good evening";
     }
-  
+
     return greeting;
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await fetchUserProfile();
-        setLoggedIn(true);
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      dispatch(getUserProfileAsync())
+  }, [dispatch]);
 
-    fetchData();
-  }, [isLoading]);
-
-  useEffect(() => {
-    const quitDate = new Date(profile && profile.smokingHabit && profile.smokingHabit.quitDate);
+/*   useEffect(() => {
+    const quitDate = new Date(
+      profile && profile.smokingHabit && profile.smokingHabit.quitDate
+    );
     const currentDate = new Date();
     const timeDiff = Math.abs(quitDate.getTime() - currentDate.getTime());
     const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-    console.log(days)
+    console.log(days);
     setDaysPassed(days);
-  }, [profile]);
+  }, [profile]); */
 
   const handleOpenReadMe1 = () => {
     setOpenReadMe1(!openReadMe1);
@@ -83,7 +79,9 @@ function Dashboard() {
         <div className="form-box-dashboard">
           <div className="dashboard-good-morning">
             <strong>
-              <h2 id="greeting">{getGreeting()} {capitalizeFirstLetter(profile.name)}</h2>
+              <h2 id="greeting">
+                {getGreeting()} {capitalizeFirstLetter(profile.name)}
+              </h2>
             </strong>
             <p>You are doing great!</p>
           </div>
@@ -97,7 +95,10 @@ function Dashboard() {
                 You saved:{" "}
                 <p>
                   <strong>
-                    {profile && profile.savedMoney && profile.savedMoney.toFixed(2)} {profile.smokingHabit.selectedCurrency}
+                    {profile &&
+                      profile.savedMoney &&
+                      profile.savedMoney.toFixed(2)}{" "}
+                    {profile.smokingHabit.selectedCurrency}
                   </strong>
                 </p>
               </label>
@@ -143,7 +144,9 @@ function Dashboard() {
             {openReadMe1 && (
               <div>
                 <br />
-                <h2><strong>Unlocking the Path to Freedom:</strong></h2>
+                <h2>
+                  <strong>Unlocking the Path to Freedom:</strong>
+                </h2>
                 <p>
                   Quitting smoking is not merely an act of giving up a harmful
                   habit; it is an act of self-love and empowerment. As you leave
@@ -154,7 +157,9 @@ function Dashboard() {
                 </p>
                 <br />
 
-                <h2><strong>A Breath of Fresh Air:</strong></h2>
+                <h2>
+                  <strong>A Breath of Fresh Air:</strong>
+                </h2>
                 <p>
                   Imagine the sensation of taking a deep breath without the
                   heavy burden of smoke-filled lungs. The moment you quit
@@ -166,7 +171,9 @@ function Dashboard() {
                 </p>
                 <br />
 
-                <h2><strong>Embracing Vitality:</strong></h2>
+                <h2>
+                  <strong>Embracing Vitality:</strong>
+                </h2>
                 <p>
                   Your decision to quit smoking sets in motion a series of
                   remarkable transformations within your body. Say goodbye to
@@ -199,22 +206,39 @@ function Dashboard() {
 
         <div className="wrapper-articles">
           <p>
-            Life is not without its challenges, but with each hurdle you overcome, your resilience grows stronger. Draw inspiration from your own determination and ...
+            Life is not without its challenges, but with each hurdle you
+            overcome, your resilience grows stronger. Draw inspiration from your
+            own determination and ...
             <button onClick={handleOpenReadMe2} className="dashboard-article">
               read more
             </button>
             {openReadMe2 && (
               <p>
                 <br />
-                <h2><strong>A Journey of Resilience:</strong></h2>
+                <h2>
+                  <strong>A Journey of Resilience:</strong>
+                </h2>
                 <p>
-                  The path to a smoke-free life is not without its challenges,but with each hurdle you overcome, your resilience grows stronger. Draw inspiration from your own determination and the countless success stories of those who have embarked on this journey before you. Remember, you are not alone. Reach out for support, lean on loved ones, and celebrate every small victory along the way.
+                  The path to a smoke-free life is not without its
+                  challenges,but with each hurdle you overcome, your resilience
+                  grows stronger. Draw inspiration from your own determination
+                  and the countless success stories of those who have embarked
+                  on this journey before you. Remember, you are not alone. Reach
+                  out for support, lean on loved ones, and celebrate every small
+                  victory along the way.
                 </p>
                 <br />
 
-                <h2><strong>A Legacy of Inspiration:</strong></h2>
+                <h2>
+                  <strong>A Legacy of Inspiration:</strong>
+                </h2>
                 <p>
-                  By quitting smoking, you pave the way for a legacy of inspiration. Your journey becomes a beacon of hope for those who still battle the chains of addiction. Share your story, uplift others, and stand as a testament to the power of the human spirit. Your triumph over smoking becomes a source of encouragement for countless souls yearning to break free.
+                  By quitting smoking, you pave the way for a legacy of
+                  inspiration. Your journey becomes a beacon of hope for those
+                  who still battle the chains of addiction. Share your story,
+                  uplift others, and stand as a testament to the power of the
+                  human spirit. Your triumph over smoking becomes a source of
+                  encouragement for countless souls yearning to break free.
                 </p>
               </p>
             )}

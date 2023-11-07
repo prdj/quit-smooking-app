@@ -7,7 +7,7 @@ function SavedMoney() {
   const [savedMoney, setSavedMoney] = useState(0);
   const [currency, setCurrency] = useState("");
   const { profile, fetchUserProfile, hasToken } = useContext(ProfileContext);
-  
+
   useEffect(() => {
     const calculateSavedMoney = () => {
       try {
@@ -22,9 +22,8 @@ function SavedMoney() {
           const cigarettesInPackage = profile.smokingHabit.cigarettesInPackage;
 
           const cigarettesSmoked = cigarettesPerDay * daysPassed;
-          const savedMoney = profile && profile.savedMoney
+          const savedMoney = profile && profile.savedMoney;
 
-          
           setSavedMoney(savedMoney);
           setCurrency(profile.smokingHabit.selectedCurrency);
           //localStorage.setItem("savedMoney", savedMoney.toFixed(2)); // Cache the saved money value in localStorage
@@ -35,19 +34,17 @@ function SavedMoney() {
           localStorage.setItem("lastUpdate", new Date().toISOString()); // Cache the timestamp of the last update
           localStorage.setItem("daysPassed", daysPassed);
 
-       
-
           const updateSavedMoneyInDatabase = async (savedMoney) => {
             try {
               const token = hasToken;
-        
+
               const updatedUserData = {
-                savedMoney
+                savedMoney,
               };
-        
+
               // Make an API request to update the saved money in the database
               await axios.put(
-                'https://quit-smoking-app.onrender.com/api/users/update-saved-money',
+                "https://quit-smoking-app.onrender.com/api/users/update-saved-money",
                 updatedUserData,
                 {
                   headers: {
@@ -56,7 +53,7 @@ function SavedMoney() {
                 }
               );
 
-              console.log('Data sent:', updatedUserData)
+              console.log("Data sent:", updatedUserData);
             } catch (error) {
               console.error(error);
             }
@@ -101,7 +98,7 @@ function SavedMoney() {
     fetchData();
   }, [fetchUserProfile]);
 
-  console.log(savedMoney)
+  console.log(savedMoney);
   return (
     <div>
       {!isLoading ? (
@@ -109,7 +106,8 @@ function SavedMoney() {
           <div>
             <h2>Saved Money</h2>
             <p>
-              You have saved {profile && profile.savedMoney.toFixed(2)} {currency}
+              You have saved {profile && profile.savedMoney.toFixed(2)}{" "}
+              {currency}
             </p>
           </div>
         ) : (

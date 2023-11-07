@@ -1,40 +1,42 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { ProfileContext } from '../context/ProfileContext';
-import axios from 'axios';
-import '../styles/Goals.css'
+import React, { useState, useContext, useEffect } from "react";
+import { ProfileContext } from "../context/ProfileContext";
+import axios from "axios";
+import "../styles/Goals.css";
 
 // Chart
-import SavedMoney from '../components/SavedMoney.jsx';
-import { FaCheck, FaTrash , FaHourglassHalf} from 'react-icons/fa'; // Example icons from FontAwesome
+import SavedMoney from "../components/SavedMoney.jsx";
+import { FaCheck, FaTrash, FaHourglassHalf } from "react-icons/fa"; // Example icons from FontAwesome
 
 const Goals = () => {
   const { hasToken, profile, fetchUserProfile } = useContext(ProfileContext);
   const [goals, setGoals] = useState([]);
-  const [description, setDescription] = useState('');
-  const [goalCost, setGoalCost] = useState('');
-  const [currency, setCurrency] = useState('');
+  const [description, setDescription] = useState("");
+  const [goalCost, setGoalCost] = useState("");
+  const [currency, setCurrency] = useState("");
   const [showNewGoalForm, setShowNewGoalForm] = useState(false);
   const [goalSaved, setGoalSaved] = useState(false);
   const [savedMoney, setSavedMoney] = useState();
   const [showModal, setShowModal] = useState(false);
-  const quitDate = new Date(profile && profile.smokingHabit && profile.smokingHabit.quitDate);
+  const quitDate = new Date(
+    profile && profile.smokingHabit && profile.smokingHabit.quitDate
+  );
   const currentDate = new Date();
   const timeDiff = Math.abs(currentDate.getTime() - quitDate.getTime());
   const daysPassed = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
+  // Saved money
+  const cigarettesInPackage =
+    profile && profile.smokingHabit && profile.smokingHabit.cigarettesInPackage;
+  const packageCost =
+    profile && profile.smokingHabit && profile.smokingHabit.packageCost;
+  const cigarettesPerDay =
+    profile && profile.smokingHabit && profile.smokingHabit.cigarettesPerDay;
+  const priceForOneCigarret =
+    (packageCost / cigarettesInPackage) * cigarettesPerDay;
+  const savedMoneyy = profile.savedMoney;
 
-
-  // Saved money 
-  const cigarettesInPackage = profile && profile.smokingHabit && profile.smokingHabit.cigarettesInPackage;
-  const packageCost =profile && profile.smokingHabit &&  profile.smokingHabit.packageCost;
-  const cigarettesPerDay =profile && profile.smokingHabit &&  profile.smokingHabit.cigarettesPerDay;
-  const priceForOneCigarret =  (packageCost / cigarettesInPackage) * cigarettesPerDay;
- const savedMoneyy = profile.savedMoney
-
-
-  
   useEffect(() => {
-    localStorage.setItem('goals', JSON.stringify(goals));
+    localStorage.setItem("goals", JSON.stringify(goals));
   }, [goals]);
 
   useEffect(() => {
@@ -43,8 +45,8 @@ const Goals = () => {
     if (storedSavedMoney) {
       setSavedMoney(parseFloat(storedSavedMoney));
     }
-    setSavedMoney(savedMoneyy)
-    const storedGoals = localStorage.getItem('goals');
+    setSavedMoney(savedMoneyy);
+    const storedGoals = localStorage.getItem("goals");
     if (storedGoals) {
       setGoals(JSON.parse(storedGoals));
     }
@@ -82,7 +84,7 @@ const Goals = () => {
       };
 
       const response = await axios.put(
-        'https://quit-smoking-app.onrender.com/api/users/goals',
+        "https://quit-smoking-app.onrender.com/api/users/goals",
         newGoalData,
         {
           headers: {
@@ -101,14 +103,13 @@ const Goals = () => {
         const newGoal = goalsArray[goalsArray.length - 1];
         if (newGoal) {
           const { description, goalCost, currency } = newGoal;
-          // Do something with the properties
         }
 
         setGoals((prevGoals) => [...prevGoals, newGoal]);
 
-        setDescription('');
+        setDescription("");
         setGoalCost(0);
-        setCurrency('');
+        setCurrency("");
         setShowNewGoalForm(false);
       }
     } catch (error) {
@@ -135,7 +136,9 @@ const Goals = () => {
         );
       }
     } catch (error) {
-      console.error(error);
+      console.log(error.response);
+
+      return error.response;
     }
   };
 
@@ -143,10 +146,6 @@ const Goals = () => {
     setShowNewGoalForm(!showNewGoalForm);
     setGoalSaved(false);
   };
-
-  //  useEffect(() => {
-  //    localStorage.setItem('savedMoney', savedMoney.toString());
-  //  }, [savedMoney]);
 
   const handleGoalComplete = async (goal) => {
     const updatedSavedMoney = savedMoney - goal.goalCost;
@@ -173,7 +172,7 @@ const Goals = () => {
       };
 
       await axios.put(
-        'https://quit-smoking-app.onrender.com/api/users/update-saved-money',
+        "https://quit-smoking-app.onrender.com/api/users/update-saved-money",
         updatedUserData,
         {
           headers: {
@@ -216,21 +215,32 @@ const Goals = () => {
     }
   };
 
-  console.log(currency)
+  console.log(currency);
 
-   return (
+  return (
     <div>
-    <div className="bg-gray-100 rounded-lg shadow-lg p-4 savedmoney">
-    <p className="font-bold">
-  <span className="text-yellow-500">Total saved:</span>
-  <span className="text-green-500"> {profile &&  profile.savedMoney &&  profile.savedMoney.toFixed(2)}{profile.smokingHabit.selectedCurrency}</span>
-</p></div>
+      <div className="bg-gray-100 rounded-lg shadow-lg p-4 savedmoney">
+        <p className="font-bold">
+          <span className="text-yellow-500">Total saved:</span>
+          <span className="text-green-500">
+            {" "}
+            {profile && profile.savedMoney && profile.savedMoney.toFixed(2)}
+            {profile.smokingHabit.selectedCurrency}
+          </span>
+        </p>
+      </div>
       {showModal && (
         <>
-          <div className="modal-overlay" onClick={() => setShowModal(false)}></div>
+          <div
+            className="modal-overlay"
+            onClick={() => setShowModal(false)}
+          ></div>
           <div className="modal">
             <p className="modal-message">Action completed successfully!</p>
-            <button className="modal-close-button" onClick={() => setShowModal(false)}>
+            <button
+              className="modal-close-button"
+              onClick={() => setShowModal(false)}
+            >
               Close
             </button>
           </div>
@@ -257,7 +267,7 @@ const Goals = () => {
                   type="number"
                   className="goals-input-box"
                   value={goalCost}
-                  placeholder='0'
+                  placeholder="0"
                   onChange={handleGoalCostChange}
                 />
                 <select
@@ -272,20 +282,20 @@ const Goals = () => {
                 </select>
               </div>
               <button
-  type="submit"
-  className="text-white font-semibold py-2 px-4 rounded-lg shadow-lg"
-  style={{ backgroundColor: "#f6b801" }}
->
-  Save Goal
-</button>
+                type="submit"
+                className="text-white font-semibold py-2 px-4 rounded-lg shadow-lg"
+                style={{ backgroundColor: "#f6b801" }}
+              >
+                Save Goal
+              </button>
             </form>
           )}
 
           <div className="goals_createGoal">
-        <button className="goals_addGoal_btn" onClick={handleToggleForm}>
-          {showNewGoalForm ? 'Cancel' : 'Add Goal'}
-        </button>
-      </div>
+            <button className="goals_addGoal_btn" onClick={handleToggleForm}>
+              {showNewGoalForm ? "Cancel" : "Add Goal"}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -296,7 +306,9 @@ const Goals = () => {
             .map((goal, index) => (
               <div
                 key={index}
-                className={`goal-card ${goal.achieved ? 'goal-card-achieved' : ''}`}
+                className={`goal-card ${
+                  goal.achieved ? "goal-card-achieved" : ""
+                }`}
               >
                 <div className="goal-card-content">
                   <p className="goal-card-title">Goal: {goal.description}</p>
@@ -316,8 +328,12 @@ const Goals = () => {
                     <FaCheck />
                   </button>
                 ) : (
-                  <span >
-                    {goal.achieved ? <FaCheck className="achieved-icon-check"/> : <FaHourglassHalf className="achieved-icon"/>}
+                  <span>
+                    {goal.achieved ? (
+                      <FaCheck className="achieved-icon-check" />
+                    ) : (
+                      <FaHourglassHalf className="achieved-icon" />
+                    )}
                   </span>
                 )}
                 <button
@@ -338,6 +354,5 @@ const Goals = () => {
     </div>
   );
 };
-
 
 export default Goals;

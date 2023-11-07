@@ -1,7 +1,8 @@
-import { useContext, useEffect } from "react";
-import { RegisterContext } from "../context/SignUpContext";
+import { useEffect } from "react";
 import { useNavigate, Navigate, Link } from "react-router-dom";
-import { ProfileContext } from "../context/ProfileContext";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserProfileAsync } from "../redux/profileSlice";
+
 import "../styles/SignUp.css";
 
 //icons
@@ -9,7 +10,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const SignUp = () => {
-  const {
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile);
+  const name = profile.name;
+  const email = profile.email;
+  const password = profile.password;
+
+  /*   const {
     name,
     email,
     password,
@@ -18,11 +25,13 @@ const SignUp = () => {
     handlePasswordChange,
     handleRegister,
     nameValidation,
-    passwordValidation
-  } = useContext(RegisterContext) || {};
+    passwordValidation,
+  } = useContext(RegisterContext) || {}; */
+
   const navigate = useNavigate();
-  const { isLoggedIn, setLoggedIn, initPath, hasToken } = useContext(ProfileContext);
-  //const { hasToken } = useContext(AuthContext);
+
+  /*   const { isLoggedIn, setLoggedIn, initPath, hasToken } =
+    useContext(ProfileContext); */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,26 +45,24 @@ const SignUp = () => {
       console.error(error); // Example: Display the error message
     }
   };
-  console.log(isLoggedIn);
 
-  // useEffect(() => {
-  //   if (hasToken) {
-  //     navigate("/me/survey");
-  //   }
-  // }, [hasToken, navigate]);
-
-  if (isLoggedIn) {
-    return <Navigate to={initPath.includes("signup") ? "/me/survey" : initPath} />;
-  }
+  /*  if (isLoggedIn) {
+    return (
+      <Navigate to={initPath.includes("signup") ? "/me/survey" : initPath} />
+    );
+  } */
 
   const isFormValid = name !== "" && email !== "" && password !== "";
+
+  useEffect(()=>{
+    dispatch(getUserProfileAsync())
+  }, [dispatch])
 
   return (
     <>
       <div className="signup-background">
         <div className="signup-wrapper">
           <form onSubmit={handleSubmit}>
-
             <div className="signup-input-box">
               <span className="signup-icon">
                 <FontAwesomeIcon icon={faUser} name="name"></FontAwesomeIcon>
@@ -67,12 +74,16 @@ const SignUp = () => {
                   type="text"
                   name="name"
                   value={name}
-                  onChange={handleNameChange}
-                  
-
+                  //onChange={handleNameChange}
                 />
               </label>
-              {nameValidation && <p style={{ color: 'grey', fontSize: '10px', marginTop: '-2em' }}>{nameValidation}</p>}
+              {/*    {nameValidation && (
+                <p
+                  style={{ color: "grey", fontSize: "10px", marginTop: "-2em" }}
+                >
+                  {nameValidation}
+                </p>
+              )} */}
             </div>
 
             <div className="signup-input-box">
@@ -89,7 +100,7 @@ const SignUp = () => {
                   type="email"
                   name="email"
                   value={email}
-                  onChange={handleEmailChange}
+                  //onChange={handleEmailChange}
                 />
               </label>
             </div>
@@ -106,19 +117,30 @@ const SignUp = () => {
                 <input
                   type="password"
                   name="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  style={{ marginBottom: '0' }}
+                  //value={password}
+                  //onChange={handlePasswordChange}
+                  style={{ marginBottom: "0" }}
                 />
               </label>
-              {passwordValidation && (
-                <p style={{ color: 'grey', fontSize: '10px', marginTop: '-2em', marginBottom: '0px' }}>
+              {/* {passwordValidation && (
+                <p
+                  style={{
+                    color: "grey",
+                    fontSize: "10px",
+                    marginTop: "-2em",
+                    marginBottom: "0px",
+                  }}
+                >
                   {passwordValidation}
-                </p>)}
+                </p>
+              )} */}
             </div>
 
             <div className="signup-btn">
-              <button type="submit" disabled={!isFormValid}> Register</button>
+              <button type="submit" disabled={!isFormValid}>
+                {" "}
+                Register
+              </button>
             </div>
 
             <div className="signup-to-login">

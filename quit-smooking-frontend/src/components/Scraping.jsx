@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import cheerio from 'cheerio';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import cheerio from "cheerio";
 
 const App = () => {
   const [posts, setPosts] = useState([]);
@@ -8,7 +8,7 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://www.reddit.com/');
+        const response = await axios.get("https://www.reddit.com/");
         const $ = cheerio.load(response.data);
         const postTitles = [];
 
@@ -19,7 +19,7 @@ const App = () => {
 
         setPosts(postTitles);
       } catch (error) {
-        console.log('Error:', error);
+        console.log("Error:", error);
       }
     };
 
@@ -30,9 +30,7 @@ const App = () => {
     <div>
       <h1>Scraped Reddit Post Titles</h1>
       <ul>
-        {posts && posts.map((post, index) => (
-          <li key={index}>{post}</li>
-        ))}
+        {posts && posts.map((post, index) => <li key={index}>{post}</li>)}
       </ul>
     </div>
   );
